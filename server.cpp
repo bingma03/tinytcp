@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 		printf("receive message from clinet: %s\n", buf);
 		
 		close(connfd);
-		return 0;
+		// return 0;
 	}
 	close(listenfd);
 	return 0;
