@@ -37,18 +37,21 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
+    // while(1) {
 	if (connect(socketfd, (struct sockaddr*)&severaddr, sizeof(severaddr)) < 0) {
 		printf("connect error: %s(errno: %d)\n", strerror(errno), errno);
 		return 0;
 	}
 
-	printf("send message to sever: \n");
-	fgets(sendline, 4096, stdin);
+    while (1) {
+	    printf("send message to sever: \n");
+	    fgets(sendline, 4096, stdin);
 	
-	if (send(socketfd, sendline, strlen(sendline), 0) < 0) {
-		printf("send message error: %s(errno: %d)\n", strerror(errno), errno);
-		return 0;
-	}
+    	if (send(socketfd, sendline, strlen(sendline), 0) < 0) {
+	    	printf("send message error: %s(errno: %d)\n", strerror(errno), errno);
+		    return 0;
+	    }
+    }
 	
 	close(socketfd);
 	return 0;

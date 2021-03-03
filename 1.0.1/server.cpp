@@ -41,21 +41,33 @@ int main(int argc, char** argv) {
 	
 	printf("=====Waiting for client's request===\n");
 	
-	//while(1) {
-	if ((connfd = accept(listenfd, (struct sockaddr*)NULL, NULL)) == -1) {
-		printf("accept sever socket error: %s(errno: %d)\n", strerror(errno), errno);
+	while(1) {
+		if ((connfd = accept(listenfd, (struct sockaddr*)NULL, NULL)) == -1) {
+			printf("accept sever socket error: %s(errno: %d)\n", strerror(errno), errno);
+			return 0;
+		}
+		
+        char recvMsg[100];
+		ssize_t readLen = read(connfd, recvMsg, sizeof(recvMsg));
+        if (readLen < 0) {
+            printf("read error: %s(errno: %d)\n", strerror(errno), errno);
+            return -1;
+        }
+		recvMsg[9] = '\0';
+		printf("readLen: %d, recvMsg: %s\n", readLen, recvMsg);
+
+        sleep(5);
+        recvMsg[1] = '9';
+        ssize_t writeLen = write(connfd, recvMsg, sizeof(recvMsg));
+        if (readLen < 0) {
+            printf("write error: %s(errno: %d)\n", strerror(errno), errno);
+            return -1;
+        }
+		
+		close(connfd);
 		return 0;
 	}
-	
-    while (1) {
-		n = recv(connfd, buf, MAXLINE, 0);
-		buf[n] = '\n';
-		printf("receive message from clinet: %s\n", buf);
-		
-		//close(connfd);
-		// return 0;
-	}
-	close(listenfd);
+	//close(listenfd);
 	return 0;
 	
 }
